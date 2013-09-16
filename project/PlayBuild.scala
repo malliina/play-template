@@ -12,9 +12,6 @@ object PlayBuild extends Build {
     settings = commonSettings
   )
 
-  // Hack for play compat
-  override def settings = super.settings ++ com.typesafe.sbtidea.SbtIdeaPlugin.ideaSettings
-
   val commonSettings = Defaults.defaultSettings ++ Seq(
     scalaVersion := "2.10.2",
     retrieveManaged := false,
@@ -24,5 +21,5 @@ object PlayBuild extends Build {
 }
 
 object Dependencies {
-  val scalaTest = "org.scalatest" %% "scalatest" % "1.9.1" % "test"
+  val scalaTest = "org.scalatest" %% "scalatest" % "1.9.2" % "test"
 }
