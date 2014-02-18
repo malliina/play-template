@@ -11,7 +11,7 @@ object PlayBuild extends Build {
     fork in Test := true,
     resolvers += "Sonatype snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/",
     libraryDependencies ++= Seq(
-      "org.scalatest" %% "scalatest" % "1.9.2" % "test"
+      "org.scalatest" %% "scalatest" % "2.0" % "test"
     )
   )
 }
