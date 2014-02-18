@@ -3,23 +3,15 @@ import sbt.Keys._
 
 object PlayBuild extends Build {
 
-  import Dependencies._
+  lazy val p = Project("p", file(".")).settings(projectSettings: _*)
 
-  lazy val p = play.Project("p",
-    path = file("."),
-    applicationVersion = "0.1",
-    dependencies = Seq(scalaTest),
-    settings = commonSettings
-  )
-
-  val commonSettings = Defaults.defaultSettings ++ Seq(
-    scalaVersion := "2.10.2",
+  val projectSettings = Seq(
+    scalaVersion := "2.10.3",
     retrieveManaged := false,
     fork in Test := true,
-    resolvers += "Sonatype snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/"
+    resolvers += "Sonatype snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/",
+    libraryDependencies ++= Seq(
+      "org.scalatest" %% "scalatest" % "2.0" % "test"
+    )
   )
-}
-
-object Dependencies {
-  val scalaTest = "org.scalatest" %% "scalatest" % "1.9.2" % "test"
 }
