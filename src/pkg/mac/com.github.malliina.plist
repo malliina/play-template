@@ -3,13 +3,14 @@
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>com.mle.p</string>
+    <string>com.github.malliina.p</string>
     <key>ProgramArguments</key>
     <array>
-        <string>/opt/p/p.sh</string>
-        <string>start</string>
+        <string>/Applications/P.app/Contents/MacOS/JavaAppLauncher</string>
     </array>
     <key>KeepAlive</key>
+    <true/>
+    <key>RunAtLoad</key>
     <true/>
 </dict>
 </plist>
