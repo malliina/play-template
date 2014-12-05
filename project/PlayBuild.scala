@@ -33,7 +33,7 @@ object PlayBuild extends Build {
   ) ++ nativePackagingSettings
 
   val macPkgRoot = settingKey[Path]("Root folder for OSX packaging")
-  val macAppDir = settingKey[Path]("App.app dir")
+  val macAppDir = settingKey[Path]("DisplayName.app dir")
   val macContentsDir = settingKey[Path]("Contents dir")
   val macResources = settingKey[Path]("HTML resources for OSX packaging")
   val macScripts = settingKey[Path]("Scripts for OSX packaging")
