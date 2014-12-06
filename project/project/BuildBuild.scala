@@ -13,8 +13,8 @@ object BuildBuild extends Build {
       "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/",
       "Typesafe ivy releases" at "http://repo.typesafe.com/typesafe/ivy-releases/"
     ),
-    scalacOptions ++= Seq("-unchecked", "-deprecation"),
-    libraryDependencies ++= Seq("com.github.malliina" %% "sbt-appbundler" % "0.0.10")
+    scalacOptions ++= Seq("-unchecked", "-deprecation")
+//    libraryDependencies ++= Seq("com.github.malliina" %% "sbt-appbundler" % "0.0.10")
   ) ++ sbtPlugins
 
   def sbtPlugins = Seq(
