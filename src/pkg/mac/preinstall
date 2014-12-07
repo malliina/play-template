@@ -1,5 +1,0 @@
-#!/bin/sh
-set -e
-if /bin/launchctl list "com.github.malliina" &> /dev/null; then
-    /bin/launchctl unload "/Library/LaunchDaemons/com.github.malliina.plist"
-fi

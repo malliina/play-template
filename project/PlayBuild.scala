@@ -54,7 +54,6 @@ object PlayBuild extends Build {
     // why conf?
     linux.Keys.packageSummary in Linux := "MusicPimp summary here.",
     manufacturer := "Skogberg Labs",
-    launchdConf := Some(defaultLaunchd.value),
     exportJars := true,
     javacOptions ++= Seq("-source", "1.7", "-target", "1.7"),
     scalacOptions += "-target:jvm-1.7"
@@ -62,7 +61,6 @@ object PlayBuild extends Build {
 
   def macConfig = MacPlugin.macSettings ++ myMacConfSettings ++ Seq(
     jvmOptions ++= Seq("-Dhttp.port=8456"),
-    deleteOutOnComplete := true,
     launchdConf := Some(defaultLaunchd.value)
   )
   def myMacConfSettings = MacPlugin.macSettings ++ inConfig(Mac)(Seq(
@@ -75,6 +73,7 @@ object PlayBuild extends Build {
  * @author Michael
  */
 object ExeUtils {
+
   /**
    * Executes the supplied command with the given parameters,
    * logging the command and any subsequent output using the logger's INFO level.
