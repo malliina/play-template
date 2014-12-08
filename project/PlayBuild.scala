@@ -1,5 +1,3 @@
-import java.nio.file.Path
-
 import com.mle.file.StorageFile
 import com.mle.sbt.GenericKeys._
 import com.mle.sbt.GenericPlugin
@@ -17,7 +15,7 @@ import sbt.Keys._
 import sbt._
 
 object PlayBuild extends Build {
-
+  //  val volName = settingKey[String]("Volume name")
   lazy val p = PlayProjects.plainPlayProject("p").settings(commonSettings: _*)
 
   lazy val commonSettings = Seq(
@@ -29,18 +27,6 @@ object PlayBuild extends Build {
     updateOptions := updateOptions.value.withCachedResolution(true),
     libraryDependencies ++= Seq("com.github.malliina" %% "play-base" % "0.1.2")
   ) ++ nativePackagingSettings
-
-  val macPkgRoot = settingKey[Path]("Root folder for OSX packaging")
-  val macAppDir = settingKey[Path]("DisplayName.app dir")
-  val macContentsDir = settingKey[Path]("Contents dir")
-  val macResources = settingKey[Path]("HTML resources for OSX packaging")
-  val macScripts = settingKey[Path]("Scripts for OSX packaging")
-  val macPkgDir = settingKey[Path]("Temporary package-path for OSX")
-  val macDistribution = settingKey[Path]("Distribution.xml for OSX")
-  val macPkgBuild = taskKey[Seq[String]]("The /usr/bin/pkgbuild command to run")
-  val macProductBuild = taskKey[Seq[String]]("The /usr/bin/productbuild command to run")
-  val macPackagePath = settingKey[Path]("The path to the target .pkg for OSX")
-  val macPackage = taskKey[Path]("Creates a .pkg for OSX")
 
   lazy val nativePackagingSettings = SbtNativePackager.packagerSettings ++
     WinPlugin.windowsSettings ++
@@ -61,8 +47,28 @@ object PlayBuild extends Build {
 
   def macConfig = MacPlugin.macSettings ++ myMacConfSettings ++ Seq(
     jvmOptions ++= Seq("-Dhttp.port=8456"),
-    launchdConf := Some(defaultLaunchd.value)
+    launchdConf := Some(defaultLaunchd.value),
+    dmg := {
+      val pkgFile = pkg.value
+      val buildFolder = pkgFile.getParent
+      val destFile = buildFolder / s"${name.value}-${version.value}.dmg"
+      val logger = streams.value
+      val command = Seq(
+        "/usr/bin/hdiutil",
+        "create",
+        "-volname",
+        (displayName in Mac).value,
+        "-srcfolder",
+        pkgFile.getParent.toString,
+        "-ov",
+        destFile.toString
+      )
+      ExeUtils.execute(command, logger)
+      logger.log info s"Created $destFile"
+      destFile
+    }
   )
+
   def myMacConfSettings = MacPlugin.macSettings ++ inConfig(Mac)(Seq(
     appIcon := Some(pkgHome.value / "guitar.icns"),
     displayName := "P"
