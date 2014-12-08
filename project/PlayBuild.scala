@@ -1,3 +1,6 @@
+import java.nio.file.Files
+
+import com.mle.appbundler.AppBundler
 import com.mle.file.StorageFile
 import com.mle.sbt.GenericKeys._
 import com.mle.sbt.GenericPlugin
@@ -52,6 +55,11 @@ object PlayBuild extends Build {
       val pkgFile = pkg.value
       val buildFolder = pkgFile.getParent
       val destFile = buildFolder / s"${name.value}-${version.value}.dmg"
+      val srcDir = buildFolder / "DmgContents"
+      AppBundler.delete(srcDir)
+      Files.createDirectories(srcDir)
+//      val pkgDmgSourceFile =
+      Files.move(pkgFile, srcDir / pkgFile.getFileName)
       val logger = streams.value
       val command = Seq(
         "/usr/bin/hdiutil",
@@ -59,12 +67,12 @@ object PlayBuild extends Build {
         "-volname",
         (displayName in Mac).value,
         "-srcfolder",
-        pkgFile.getParent.toString,
+        srcDir.toString,
         "-ov",
         destFile.toString
       )
       ExeUtils.execute(command, logger)
-      logger.log info s"Created $destFile"
+//      logger.log info s"Created $destFile"
       destFile
     }
   )
