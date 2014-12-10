@@ -1,3 +1,6 @@
+import java.nio.file.Files
+
+import com.mle.appbundler.AppBundler
 import com.mle.file.StorageFile
 import com.mle.sbt.GenericKeys._
 import com.mle.sbt.GenericPlugin
@@ -47,26 +50,7 @@ object PlayBuild extends Build {
 
   def macConfig = MacPlugin.macSettings ++ myMacConfSettings ++ Seq(
     jvmOptions ++= Seq("-Dhttp.port=8456"),
-    launchdConf := Some(defaultLaunchd.value),
-    dmg := {
-      val pkgFile = pkg.value
-      val buildFolder = pkgFile.getParent
-      val destFile = buildFolder / s"${name.value}-${version.value}.dmg"
-      val logger = streams.value
-      val command = Seq(
-        "/usr/bin/hdiutil",
-        "create",
-        "-volname",
-        (displayName in Mac).value,
-        "-srcfolder",
-        pkgFile.getParent.toString,
-        "-ov",
-        destFile.toString
-      )
-      ExeUtils.execute(command, logger)
-      logger.log info s"Created $destFile"
-      destFile
-    }
+    launchdConf := Some(defaultLaunchd.value)
   )
 
   def myMacConfSettings = MacPlugin.macSettings ++ inConfig(Mac)(Seq(
