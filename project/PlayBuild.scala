@@ -24,7 +24,9 @@ object PlayBuild extends Build {
     retrieveManaged := false,
     fork in Test := true,
     updateOptions := updateOptions.value.withCachedResolution(true),
-    libraryDependencies ++= Seq("com.github.malliina" %% "play-base" % "0.1.2")
+    libraryDependencies ++= Seq(
+      "com.github.malliina" %% "play-base" % "0.1.2",
+      "com.scalatags" %% "scalatags" % "0.4.2")
   ) ++ nativePackagingSettings
 
   lazy val nativePackagingSettings = SbtNativePackager.packagerSettings ++
