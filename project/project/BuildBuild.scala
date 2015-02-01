@@ -14,13 +14,12 @@ object BuildBuild extends Build {
       "Typesafe ivy releases" at "http://repo.typesafe.com/typesafe/ivy-releases/"
     ),
     scalacOptions ++= Seq("-unchecked", "-deprecation")
-//    libraryDependencies ++= Seq("com.github.malliina" %% "sbt-appbundler" % "0.0.10")
   ) ++ sbtPlugins
 
   def sbtPlugins = Seq(
-    "com.typesafe.play" % "sbt-plugin" % "2.3.6",
+    "com.typesafe.play" % "sbt-plugin" % "2.3.7",
     "com.github.malliina" % "sbt-play" % "0.1.1",
-    "com.github.malliina" % "sbt-packager" % "1.5.10"
+    "com.github.malliina" % "sbt-packager" % "1.5.11"
   ) map addSbtPlugin
 
   override lazy val projects = Seq(root)
