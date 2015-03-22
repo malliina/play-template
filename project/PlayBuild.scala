@@ -7,8 +7,8 @@ object PlayBuild extends Build {
 
   lazy val commonSettings = Seq(
     organization := "com.github.malliina",
-    version := "0.2.1",
-    scalaVersion := "2.11.5",
+    version := "0.0.1",
+    scalaVersion := "2.11.6",
     retrieveManaged := false,
     fork in Test := true,
     updateOptions := updateOptions.value.withCachedResolution(true),
