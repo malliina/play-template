@@ -1,21 +1,23 @@
-import com.mle.sbtplay.PlayProjects
+import com.mle.sbtplay.PlayProject
 import sbt.Keys._
 import sbt._
 
 object PlayBuild extends Build {
-  lazy val p = PlayProjects.plainPlayProject("p").settings(commonSettings: _*)
+  lazy val p = PlayProject("p").settings(commonSettings: _*)
 
   lazy val commonSettings = Seq(
     organization := "com.github.malliina",
     version := "0.0.1",
-    scalaVersion := "2.11.6",
+    scalaVersion := "2.11.7",
     retrieveManaged := false,
     fork in Test := true,
     updateOptions := updateOptions.value.withCachedResolution(true),
-    libraryDependencies ++= Seq(
-      "com.github.malliina" %% "play-base" % "0.5.0"),
-    exportJars := true,
-    javacOptions ++= Seq("-source", "1.8", "-target", "1.8"),
+    resolvers ++= Seq(Resolver.bintrayRepo("malliina", "maven")),
+    libraryDependencies ++= Seq("com.github.malliina" %% "play-base" % "2.3.1"),
+    javacOptions ++= Seq(
+      "-source", "1.8",
+      "-target", "1.8"
+    ),
     scalacOptions ++= Seq(
       "-target:jvm-1.8",
       "-deprecation",

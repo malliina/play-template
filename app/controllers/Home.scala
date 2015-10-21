@@ -6,6 +6,6 @@ import play.api.mvc._
  *
  * @author mle
  */
-object Home extends Controller {
+class Home extends Controller {
   def index = Action(Ok(views.html.index("Hoi!")))
 }
