@@ -9,7 +9,7 @@ import router.Routes
 /**
  * @author mle
  */
-class AppLoader extends ApplicationLoader{
+class AppLoader extends ApplicationLoader {
   override def load(context: Context): Application = {
     Logger.configure(context.environment)
     new AppComponents(context).application
