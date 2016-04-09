@@ -1,17 +1,15 @@
 package com.mle.app
 
-import controllers.{Home, Assets}
+import controllers.{Assets, Home}
 import play.api.routing.Router
-import play.api.{Logger, BuiltInComponentsFromContext, Application, ApplicationLoader}
+import play.api._
 import play.api.ApplicationLoader.Context
 import router.Routes
 
-/**
- * @author mle
- */
 class AppLoader extends ApplicationLoader {
   override def load(context: Context): Application = {
-    Logger.configure(context.environment)
+    LoggerConfigurator(context.environment.classLoader)
+      .foreach(_.configure(context.environment))
     new AppComponents(context).application
   }
 }
