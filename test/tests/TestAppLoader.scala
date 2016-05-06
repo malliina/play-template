@@ -1,6 +1,6 @@
 package tests
 
-import com.mle.app.AppLoader
+import com.malliina.app.AppLoader
 import play.api.test.WithApplicationLoader
 
 /**

@@ -1,4 +1,4 @@
-package com.mle.app
+package com.malliina.app
 
 import controllers.{Assets, Home}
 import play.api.routing.Router

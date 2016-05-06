@@ -13,7 +13,7 @@ object PlayBuild extends Build {
     fork in Test := true,
     updateOptions := updateOptions.value.withCachedResolution(true),
     resolvers ++= Seq(Resolver.bintrayRepo("malliina", "maven")),
-    libraryDependencies ++= Seq("com.malliina" %% "util-play" % "2.6.1"),
+    libraryDependencies ++= Seq("com.malliina" %% "util-play" % "2.8.0"),
     javacOptions ++= Seq(
       "-source", "1.8",
       "-target", "1.8"
