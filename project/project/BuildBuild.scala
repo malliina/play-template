@@ -4,7 +4,7 @@ import sbt.Keys._
 object BuildBuild extends Build {
   // "build.sbt" goes here
   override lazy val settings = super.settings ++ Seq(
-    scalaVersion := "2.10.4",
+    scalaVersion := "2.10.6",
     resolvers ++= Seq(
       Resolver.url("malliina bintray sbt", url("https://dl.bintray.com/malliina/sbt-plugins/"))(Resolver.ivyStylePatterns)
     ),
@@ -12,8 +12,8 @@ object BuildBuild extends Build {
   ) ++ sbtPlugins
 
   def sbtPlugins = Seq(
-    "com.typesafe.play" % "sbt-plugin" % "2.5.4",
-    "com.malliina" % "sbt-play" % "0.7.2"
+    "com.typesafe.play" % "sbt-plugin" % "2.5.5",
+    "com.malliina" % "sbt-play" % "0.8.0"
   ) map addSbtPlugin
 
   override lazy val projects = Seq(root)
