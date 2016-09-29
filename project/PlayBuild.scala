@@ -2,7 +2,7 @@ import com.malliina.sbtplay.PlayProject
 import sbt.Keys._
 import sbt._
 
-object PlayBuild extends Build {
+object PlayBuild {
   lazy val p = PlayProject("p").settings(commonSettings: _*)
 
   lazy val commonSettings = Seq(
