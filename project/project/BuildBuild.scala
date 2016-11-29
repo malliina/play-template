@@ -12,7 +12,7 @@ object BuildBuild {
   )
 
   def sbtPlugins = Seq(
-    "com.malliina" % "sbt-play" % "0.8.2"
+    "com.malliina" % "sbt-play" % "0.9.0"
   ) map addSbtPlugin
 
   lazy val root = Project("plugins", file("."))
