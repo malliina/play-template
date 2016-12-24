@@ -3,7 +3,7 @@ import sbt.Keys._
 import sbt._
 
 object PlayBuild {
-  lazy val p = PlayProject("p").settings(commonSettings: _*)
+  lazy val p = PlayProject.default("p").settings(commonSettings: _*)
 
   lazy val commonSettings = Seq(
     organization := "com.malliina",
@@ -16,9 +16,14 @@ object PlayBuild {
       "-Xlint",
       "-Yno-adapted-args",
       "-Ywarn-dead-code",
-      "-Ywarn-numeric-widen"),
+      "-Ywarn-numeric-widen"
+    ),
+    resolvers ++= Seq(
+      Resolver.jcenterRepo,
+      Resolver.bintrayRepo("malliina", "maven")
+    ),
     libraryDependencies ++= Seq(
-      "org.scalatestplus.play" %% "scalatestplus-play" % "1.5.1" % Test
+      "com.malliina" %% "util-play" % "3.3.1" % "test->test"
     )
   )
 }

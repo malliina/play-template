@@ -1,15 +1,20 @@
 package com.malliina.app
 
-import controllers.{Assets, Home}
-import play.api.routing.Router
-import play.api._
+import controllers.{AssetsBuilder, Home}
 import play.api.ApplicationLoader.Context
-import router.Routes
+import play.api._
+import play.api.routing.Router
+import play.api.routing.sird._
 
 class AppLoader extends LoggingAppLoader[AppComponents] with WithAppComponents
 
 class AppComponents(context: Context) extends BuiltInComponentsFromContext(context) {
-  lazy val assets = new Assets(httpErrorHandler)
+  lazy val assets = new AssetsBuilder(httpErrorHandler)
   val secretService = SecretService
-  override val router: Router = new Routes(httpErrorHandler, new Home, assets)
+  val home = new Home
+
+  override def router = Router.from {
+    case GET(p"/") => home.index
+    case GET(p"/assets/$file*") => assets.at(path = "/public", file)
+  }
 }
