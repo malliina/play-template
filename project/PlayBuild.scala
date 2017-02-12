@@ -5,7 +5,7 @@ import sbt._
 object PlayBuild {
   lazy val p = PlayProject.default("p").settings(commonSettings: _*)
 
-  val utilPlayDep = "com.malliina" %% "util-play" % "3.3.3"
+  val utilPlayDep = "com.malliina" %% "util-play" % "3.5.3"
 
   lazy val commonSettings = Seq(
     organization := "com.malliina",

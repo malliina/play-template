@@ -10,10 +10,9 @@ import router.Routes
 class AppLoader extends DefaultApp(new AppComponents(_))
 
 class AppComponents(context: Context) extends BuiltInComponentsFromContext(context) {
-  lazy val assets = new Assets(httpErrorHandler)
   val secretService = SecretService
-
   val home = new Home
 
+  lazy val assets = new Assets(httpErrorHandler)
   override val router: Router = new Routes(httpErrorHandler, new Home, assets)
 }

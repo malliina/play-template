@@ -1,5 +1,7 @@
 package controllers
 
+import com.malliina.play.tags.TagPage
+
 import scalatags.Text.all._
 
 object AppTags {
