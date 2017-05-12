@@ -15,3 +15,5 @@ libraryDependencies ++= Seq(
   utilPlayDep,
   utilPlayDep % Test classifier "tests"
 )
+
+pipelineStages := Seq(digest, gzip)
