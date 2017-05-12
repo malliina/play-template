@@ -14,5 +14,5 @@ class AppComponents(context: Context) extends BuiltInComponentsFromContext(conte
   val home = new Home
 
   lazy val assets = new Assets(httpErrorHandler)
-  override val router: Router = new Routes(httpErrorHandler, new Home, assets)
+  override val router: Router = new Routes(httpErrorHandler, home, assets)
 }
