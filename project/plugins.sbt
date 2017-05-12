@@ -1,6 +1,7 @@
 scalaVersion := "2.10.6"
 
 resolvers ++= Seq(
+  Resolver.bintrayRepo("malliina", "maven"),
   ivyRepo("malliina bintray sbt", "https://dl.bintray.com/malliina/sbt-plugins/")
 )
 
