@@ -10,8 +10,7 @@ scalaVersion := "2.12.2"
 scalacOptions := Seq("-unchecked", "-deprecation")
 resolvers ++= Seq(
   Resolver.jcenterRepo,
-  Resolver.bintrayRepo("malliina", "maven"),
-  "Sonatype releases" at "https://oss.sonatype.org/content/repositories/releases/"
+  Resolver.bintrayRepo("malliina", "maven")
 )
 libraryDependencies ++= Seq(
   utilPlayDep,
