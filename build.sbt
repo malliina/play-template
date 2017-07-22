@@ -2,14 +2,16 @@ import com.malliina.sbtplay.PlayProject
 
 lazy val p = PlayProject.default("p")
 
-val utilPlayDep = "com.malliina" %% "util-play" % "3.6.9"
+val utilPlayDep = "com.malliina" %% "util-play" % "4.1.0"
 
 organization := "com.malliina"
 version := "0.0.1"
-scalaVersion := "2.11.11"
+scalaVersion := "2.12.2"
+scalacOptions := Seq("-unchecked", "-deprecation")
 resolvers ++= Seq(
   Resolver.jcenterRepo,
-  Resolver.bintrayRepo("malliina", "maven")
+  Resolver.bintrayRepo("malliina", "maven"),
+  "Sonatype releases" at "https://oss.sonatype.org/content/repositories/releases/"
 )
 libraryDependencies ++= Seq(
   utilPlayDep,
