@@ -2,11 +2,11 @@ import com.malliina.sbtplay.PlayProject
 
 lazy val p = PlayProject.default("p")
 
-val utilPlayDep = "com.malliina" %% "util-play" % "4.1.0"
+val utilPlayDep = "com.malliina" %% "util-play" % "4.2.0"
 
 organization := "com.malliina"
 version := "0.0.1"
-scalaVersion := "2.12.2"
+scalaVersion := "2.12.3"
 scalacOptions := Seq("-unchecked", "-deprecation")
 resolvers ++= Seq(
   Resolver.jcenterRepo,
