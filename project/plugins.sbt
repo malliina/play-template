@@ -1,4 +1,4 @@
-scalaVersion := "2.10.6"
+scalaVersion := "2.12.4"
 
 resolvers ++= Seq(
   Resolver.bintrayRepo("malliina", "maven"),
@@ -7,11 +7,11 @@ resolvers ++= Seq(
 
 scalacOptions ++= Seq("-unchecked", "-deprecation")
 
-addSbtPlugin("com.malliina" % "sbt-play" % "1.1.0")
+addSbtPlugin("com.malliina" % "sbt-play" % "1.2.0")
 
-addSbtPlugin("com.typesafe.sbt" % "sbt-digest" % "1.1.1")
+addSbtPlugin("com.typesafe.sbt" % "sbt-digest" % "1.1.4")
 
-addSbtPlugin("com.typesafe.sbt" % "sbt-gzip" % "1.0.0")
+addSbtPlugin("com.typesafe.sbt" % "sbt-gzip" % "1.0.2")
 
 def ivyRepo(name: String, urlString: String) =
   Resolver.url(name, url(urlString))(Resolver.ivyStylePatterns)
