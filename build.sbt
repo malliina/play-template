@@ -2,7 +2,7 @@ import com.malliina.sbtplay.PlayProject
 
 lazy val p = PlayProject.default("p")
 
-val utilPlayDep = "com.malliina" %% "util-play" % "4.4.0"
+val utilPlayDep = "com.malliina" %% "util-play" % "4.6.2"
 
 organization := "com.malliina"
 version := "0.0.1"
