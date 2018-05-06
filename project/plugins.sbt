@@ -13,5 +13,11 @@ Seq(
   "com.typesafe.sbt" % "sbt-gzip" % "1.0.2"
 ) map addSbtPlugin
 
+dependencyOverrides ++= Seq(
+  "org.webjars" % "webjars-locator-core" % "0.33",
+  "org.codehaus.plexus" % "plexus-utils" % "3.0.17",
+  "com.google.guava" % "guava" % "23.0"
+)
+
 def ivyRepo(name: String, urlString: String) =
   Resolver.url(name, url(urlString))(Resolver.ivyStylePatterns)
