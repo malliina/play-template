@@ -2,10 +2,10 @@ import com.malliina.sbtplay.PlayProject
 
 lazy val p = PlayProject.default("p")
 
-val utilPlayDep = "com.malliina" %% "util-play" % "4.12.2"
+val utilPlayDep = "com.malliina" %% "util-play" % "4.14.0"
 
 organization := "com.malliina"
-version := "0.0.1"
+version := "0.0.2"
 scalaVersion := "2.12.6"
 scalacOptions := Seq("-unchecked", "-deprecation")
 resolvers ++= Seq(

@@ -6,9 +6,9 @@ resolvers ++= Seq(
 )
 
 scalacOptions ++= Seq("-unchecked", "-deprecation")
-
+classpathTypes += "maven-plugin"
 Seq(
-  "com.malliina" % "sbt-play" % "1.2.2",
+  "com.malliina" % "sbt-play" % "1.3.1",
   "com.typesafe.sbt" % "sbt-digest" % "1.1.4",
   "com.typesafe.sbt" % "sbt-gzip" % "1.0.2"
 ) map addSbtPlugin
