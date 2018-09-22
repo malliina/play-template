@@ -10,7 +10,9 @@ steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
 
-- script: sudo apt-get update && sudo apt-get install sbt
+- script: wget https://dl.bintray.com/sbt/debian/sbt-1.2.3.deb
+
+- script: sudo dpkg -i sbt-1.2.3.deb
 
 - script: sbt test:test
 
