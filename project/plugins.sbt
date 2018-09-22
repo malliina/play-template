@@ -5,9 +5,9 @@ resolvers ++= Seq(
   ivyRepo("malliina bintray sbt", "https://dl.bintray.com/malliina/sbt-plugins/")
 )
 
-scalacOptions ++= Seq("-unchecked", "-deprecation")
-
 classpathTypes += "maven-plugin"
+
+scalacOptions ++= Seq("-unchecked", "-deprecation")
 
 Seq(
   "com.malliina" % "sbt-play" % "1.4.0",
