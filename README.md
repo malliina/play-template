@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/malliina/play-template.svg?branch=master)](https://travis-ci.org/malliina/play-template)
+[![CircleCI](https://circleci.com/gh/malliina/play-template.svg?style=svg)](https://circleci.com/gh/malliina/play-template)
+
 # play-template
 
 This project contains [Play Framework](http://www.playframework.com/) project templates.
