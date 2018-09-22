@@ -7,16 +7,11 @@ pool:
   vmImage: 'Ubuntu 16.04'
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
 - script: wget https://dl.bintray.com/sbt/debian/sbt-1.2.3.deb
+  displayName: 'Download SBT'
 
 - script: sudo dpkg -i sbt-1.2.3.deb
+  displayName: 'Install SBT'
 
 - script: sbt test:test
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+  displayName: 'Compile and run tests'

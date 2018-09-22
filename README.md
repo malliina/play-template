@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/malliina/play-template.svg?branch=master)](https://travis-ci.org/malliina/play-template)
 [![CircleCI](https://circleci.com/gh/malliina/play-template.svg?style=svg)](https://circleci.com/gh/malliina/play-template)
+[![Build Status](https://malliina.visualstudio.com/play-template/_apis/build/status/play-template-CI)](https://malliina.visualstudio.com/play-template/_build/latest?definitionId=1)
 
 # play-template
 
