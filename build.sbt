@@ -9,7 +9,7 @@ import sbtcrossproject.CrossPlugin.autoImport.{CrossType => PortableType, crossP
 import scala.sys.process.Process
 import scala.util.Try
 
-val utilPlayDep = "com.malliina" %% "util-play" % "4.14.0"
+val utilPlayDep = "com.malliina" %% "util-play" % "4.17.0"
 
 lazy val all = project.in(file("."))
   .aggregate(vanilla, backend, frontend, crossJvm, crossJs, native)
