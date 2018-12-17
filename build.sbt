@@ -98,15 +98,11 @@ lazy val frontendSettings = commonSettings ++ Seq(
 lazy val commonSettings = Seq(
   organization := "com.malliina",
   version := "0.0.1",
-  scalaVersion := "2.12.6",
+  scalaVersion := "2.12.8",
   scalacOptions := Seq("-unchecked", "-deprecation"),
   resolvers ++= Seq(
     Resolver.jcenterRepo,
     Resolver.bintrayRepo("malliina", "maven")
-  ),
-  dependencyOverrides ++= Seq(
-    "com.typesafe.akka" %% "akka-stream" % "2.5.8",
-    "com.typesafe.akka" %% "akka-actor" % "2.5.8"
   )
 )
 
