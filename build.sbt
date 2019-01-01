@@ -9,22 +9,62 @@ import sbtcrossproject.CrossPlugin.autoImport.{CrossType => PortableType, crossP
 import scala.sys.process.Process
 import scala.util.Try
 
-val utilPlayDep = "com.malliina" %% "util-play" % "4.17.0"
+val utilPlayDep = "com.malliina" %% "util-play" % "4.18.1"
+
+val commonSettings = Seq(
+  organization := "com.malliina",
+  version := "0.0.1",
+  scalaVersion := "2.12.8",
+  scalacOptions := Seq("-unchecked", "-deprecation"),
+  resolvers ++= Seq(
+    Resolver.jcenterRepo,
+    Resolver.bintrayRepo("malliina", "maven")
+  )
+)
 
 lazy val all = project.in(file("."))
   .aggregate(vanilla, backend, frontend, crossJvm, crossJs, native)
 
 lazy val vanilla = PlayProject.default("vanilla", file("vanilla"))
-  .settings(vanillaSettings: _*)
+  .settings(commonSettings)
+  .settings(
+    libraryDependencies ++= Seq(
+      utilPlayDep,
+      utilPlayDep % Test classifier "tests"
+    ),
+    pipelineStages := Seq(digest, gzip)
+  )
 
 lazy val backend = PlayProject.default("backend", file("full"))
-  .settings(backendSettings: _*)
+  .enablePlugins(WebScalaJSBundlerPlugin)
   .dependsOn(crossJvm)
+  .settings(commonSettings)
+  .settings(
+    libraryDependencies ++= Seq(
+      utilPlayDep,
+      utilPlayDep % Test classifier "tests"
+    ),
+    pipelineStages := Seq(digest, gzip),
+    scalaJSProjects := Seq(frontend),
+    pipelineStages in Assets := Seq(scalaJSPipeline)
+  )
 
 lazy val frontend = project.in(file("full/frontend"))
-  .settings(frontendSettings: _*)
-  .enablePlugins(ScalaJSPlugin)
+  .enablePlugins(ScalaJSBundlerPlugin)
   .dependsOn(crossJs)
+  .settings(commonSettings)
+  .settings(
+    libraryDependencies ++= Seq(
+      "com.lihaoyi" %%% "scalatags" % "0.6.7",
+      "org.scala-js" %%% "scalajs-dom" % "0.9.6",
+      "org.scalatest" %%% "scalatest" % "3.0.5" % Test,
+      "be.doeraene" %%% "scalajs-jquery" % "0.9.4"
+    ),
+    scalaJSUseMainModuleInitializer := true,
+    version in webpack := "4.27.1",
+    emitSourceMaps := false,
+    webpackBundlingMode := BundlingMode.LibraryOnly()
+  )
 
 lazy val cross = portableProject(JSPlatform, JVMPlatform)
   .crossType(PortableType.Full)
@@ -36,75 +76,36 @@ lazy val crossJs = cross.js
 
 lazy val native = project.in(file("native"))
   .enablePlugins(PlayScala, SbtNativePackager, BuildInfoPlugin)
-  .settings(nativeSettings: _*)
-
-lazy val vanillaSettings: Seq[Setting[_]] = commonSettings ++ Seq(
-  libraryDependencies ++= Seq(
-    utilPlayDep,
-    utilPlayDep % Test classifier "tests"
-  ),
-  pipelineStages := Seq(digest, gzip)
-)
-
-lazy val nativeSettings: Seq[Setting[_]] = commonSettings ++ WinPlugin.windowsSettings ++ Seq(
-  retrieveManaged := false,
-  fork in Test := true,
-  libraryDependencies ++= Seq(
-    "com.lihaoyi" %% "scalatags" % "0.6.7"
-  ),
-  exportJars := true,
-  javacOptions ++= Seq("-source", "1.8", "-target", "1.8"),
-  scalacOptions ++= Seq(
-    "-target:jvm-1.8",
-    "-deprecation",
-    "-encoding", "UTF-8",
-    "-unchecked",
-    "-feature",
-    "-language:existentials",
-    "-language:higherKinds",
-    "-language:implicitConversions",
-    "-Xlint",
-    "-Yno-adapted-args",
-    "-Ywarn-numeric-widen"
-  ),
-  upgradeGuid := "5EC7F244-24F9-4E1C-B19D-591626C50F02",
-  GenericKeys.manufacturer := "Me",
-  forceStopOnUninstall := true,
-  winSwExe in Windows := (pkgHome in Windows).value.resolve("WinSW.NET2.exe"),
-  useTerminateProcess := true,
-  buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, "gitHash" -> gitHash),
-  buildInfoPackage := "com.malliina.pn"
-)
-
-lazy val backendSettings = commonSettings ++ Seq(
-  libraryDependencies ++= Seq(
-    utilPlayDep,
-    utilPlayDep % Test classifier "tests"
-  ),
-  pipelineStages := Seq(digest, gzip),
-  scalaJSProjects := Seq(frontend),
-  pipelineStages in Assets := Seq(scalaJSPipeline)
-)
-
-lazy val frontendSettings = commonSettings ++ Seq(
-  libraryDependencies ++= Seq(
-    "org.scala-js" %%% "scalajs-dom" % "0.9.6",
-    "org.scalatest" %%% "scalatest" % "3.0.5" % Test,
-    "be.doeraene" %%% "scalajs-jquery" % "0.9.4"
-  ),
-  scalaJSUseMainModuleInitializer := true
-)
-
-lazy val commonSettings = Seq(
-  organization := "com.malliina",
-  version := "0.0.1",
-  scalaVersion := "2.12.8",
-  scalacOptions := Seq("-unchecked", "-deprecation"),
-  resolvers ++= Seq(
-    Resolver.jcenterRepo,
-    Resolver.bintrayRepo("malliina", "maven")
+  .settings(commonSettings ++ WinPlugin.windowsSettings)
+  .settings(
+    retrieveManaged := false,
+    fork in Test := true,
+    libraryDependencies ++= Seq(
+      "com.lihaoyi" %% "scalatags" % "0.6.7"
+    ),
+    exportJars := true,
+    javacOptions ++= Seq("-source", "1.8", "-target", "1.8"),
+    scalacOptions ++= Seq(
+      "-target:jvm-1.8",
+      "-deprecation",
+      "-encoding", "UTF-8",
+      "-unchecked",
+      "-feature",
+      "-language:existentials",
+      "-language:higherKinds",
+      "-language:implicitConversions",
+      "-Xlint",
+      "-Yno-adapted-args",
+      "-Ywarn-numeric-widen"
+    ),
+    upgradeGuid := "5EC7F244-24F9-4E1C-B19D-591626C50F02",
+    GenericKeys.manufacturer := "Me",
+    forceStopOnUninstall := true,
+    winSwExe in Windows := (pkgHome in Windows).value.resolve("WinSW.NET2.exe"),
+    useTerminateProcess := true,
+    buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, "gitHash" -> gitHash),
+    buildInfoPackage := "com.malliina.pn"
   )
-)
 
 def gitHash: String =
   Try(Process("git rev-parse --short HEAD").lineStream.head).toOption.getOrElse("unknown")
