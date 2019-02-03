@@ -2,14 +2,13 @@ import com.malliina.sbt.GenericKeys
 import com.malliina.sbt.GenericKeys.pkgHome
 import com.malliina.sbt.win.WinKeys.{forceStopOnUninstall, upgradeGuid, useTerminateProcess, winSwExe}
 import com.malliina.sbt.win.WinPlugin
-import com.malliina.sbtplay.PlayProject
 import sbt.Keys.fork
 import sbtcrossproject.CrossPlugin.autoImport.{CrossType => PortableType, crossProject => portableProject}
 
 import scala.sys.process.Process
 import scala.util.Try
 
-val utilPlayDep = "com.malliina" %% "util-play" % "4.18.1"
+val utilPlayDep = "com.malliina" %% "util-play" % "5.0.0"
 
 val commonSettings = Seq(
   organization := "com.malliina",
@@ -22,10 +21,8 @@ val commonSettings = Seq(
   )
 )
 
-lazy val all = project.in(file("."))
-  .aggregate(vanilla, backend, frontend, crossJvm, crossJs, native)
-
-lazy val vanilla = PlayProject.default("vanilla", file("vanilla"))
+val vanilla = project.in(file("vanilla"))
+  .enablePlugins(PlayDefaultPlugin)
   .settings(commonSettings)
   .settings(
     libraryDependencies ++= Seq(
@@ -35,22 +32,16 @@ lazy val vanilla = PlayProject.default("vanilla", file("vanilla"))
     pipelineStages := Seq(digest, gzip)
   )
 
-lazy val backend = PlayProject.default("backend", file("full"))
-  .enablePlugins(WebScalaJSBundlerPlugin)
-  .dependsOn(crossJvm)
-  .settings(commonSettings)
-  .settings(
-    libraryDependencies ++= Seq(
-      utilPlayDep,
-      utilPlayDep % Test classifier "tests"
-    ),
-    pipelineStages := Seq(digest, gzip),
-    scalaJSProjects := Seq(frontend),
-    pipelineStages in Assets := Seq(scalaJSPipeline)
-  )
+val cross = portableProject(JSPlatform, JVMPlatform)
+  .crossType(PortableType.Full)
+  .in(file("shared"))
+  .settings(commonSettings: _*)
 
-lazy val frontend = project.in(file("full/frontend"))
-  .enablePlugins(ScalaJSBundlerPlugin)
+val crossJvm = cross.jvm
+val crossJs = cross.js
+
+val frontend = project.in(file("frontend"))
+  .enablePlugins(ScalaJSBundlerPlugin, ScalaJSWeb)
   .dependsOn(crossJs)
   .settings(commonSettings)
   .settings(
@@ -63,18 +54,31 @@ lazy val frontend = project.in(file("full/frontend"))
     scalaJSUseMainModuleInitializer := true,
     version in webpack := "4.27.1",
     emitSourceMaps := false,
-    webpackBundlingMode := BundlingMode.LibraryOnly()
+    webpackBundlingMode := BundlingMode.LibraryOnly(),
+    npmDevDependencies in Compile ++= Seq(
+      // Hack because webpack sucks
+      "terser" -> "3.14.1",
+      "webpack-merge" -> "4.1.5"
+    ),
+    webpackConfigFile in fastOptJS := Some(baseDirectory.value / "webpack.dev.config.js"),
+    webpackConfigFile in fullOptJS := Some(baseDirectory.value / "webpack.prod.config.js"),
   )
 
-lazy val cross = portableProject(JSPlatform, JVMPlatform)
-  .crossType(PortableType.Full)
-  .in(file("full/shared"))
-  .settings(commonSettings: _*)
+val backend = project.in(file("backend"))
+  .enablePlugins(WebScalaJSBundlerPlugin, PlayDefaultPlugin)
+  .dependsOn(crossJvm)
+  .settings(commonSettings)
+  .settings(
+    libraryDependencies ++= Seq(
+      utilPlayDep,
+      utilPlayDep % Test classifier "tests"
+    ),
+    pipelineStages := Seq(digest, gzip),
+    scalaJSProjects := Seq(frontend),
+    pipelineStages in Assets := Seq(scalaJSPipeline)
+  )
 
-lazy val crossJvm = cross.jvm
-lazy val crossJs = cross.js
-
-lazy val native = project.in(file("native"))
+val native = project.in(file("native"))
   .enablePlugins(PlayScala, SbtNativePackager, BuildInfoPlugin)
   .settings(commonSettings ++ WinPlugin.windowsSettings)
   .settings(
@@ -106,6 +110,10 @@ lazy val native = project.in(file("native"))
     buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, "gitHash" -> gitHash),
     buildInfoPackage := "com.malliina.pn"
   )
+
+val playTemplates = project.in(file("."))
+  .aggregate(vanilla, frontend, backend, native)
+  .settings(commonSettings)
 
 def gitHash: String =
   Try(Process("git rev-parse --short HEAD").lineStream.head).toOption.getOrElse("unknown")

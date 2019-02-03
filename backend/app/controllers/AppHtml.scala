@@ -23,8 +23,6 @@ object AppHtml {
 }
 
 class AppHtml(scripts: Seq[String]) extends Tags(scalatags.Text) {
-  val defer = attr("defer").empty
-
   def index(msg: String) = TagPage(
     html(
       head(
