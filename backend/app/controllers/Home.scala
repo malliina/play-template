@@ -8,6 +8,8 @@ class Home(html: AppHtml, comps: ControllerComponents, assets: AssetsBuilder)
 
   def index = Action(Ok(html.index("Hello!")))
 
+  def static(file: String) = assets.at("/public", s"static/$file", aggressiveCaching = true)
+
   def versioned(path: String, file: Asset): Action[AnyContent] =
     assets.versioned(path, file)
 }

@@ -7,5 +7,12 @@
 This project contains [Play Framework](http://www.playframework.com/) project templates.
 
 - a [vanilla](vanilla) project with minimal dependencies
-- a [backend](backend) project that adds Scala.js and LESS assets to the mix
+- a [backend](backend) project coupled to a [frontend](frontend) project that adds 
+[Scala.js](https://www.scala-js.org/) and LESS assets to the mix
 - a [native](native) project that demonstrates packaging a Play app to run as a Windows service
+
+## Scala, Scala.js and webpack integration
+
+While Scala projects use sbt, frontend dependencies use npm and are bundled with webpack. 
+[scalajs-bundler](https://scalacenter.github.io/scalajs-bundler/) wraps webpack and makes the assets 
+available to the Play backend.

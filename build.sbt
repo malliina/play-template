@@ -1,14 +1,24 @@
 import com.malliina.sbt.GenericKeys
 import com.malliina.sbt.GenericKeys.pkgHome
-import com.malliina.sbt.win.WinKeys.{forceStopOnUninstall, upgradeGuid, useTerminateProcess, winSwExe}
+import com.malliina.sbt.win.WinKeys.{
+  forceStopOnUninstall,
+  upgradeGuid,
+  useTerminateProcess,
+  winSwExe
+}
 import com.malliina.sbt.win.WinPlugin
 import sbt.Keys.fork
-import sbtcrossproject.CrossPlugin.autoImport.{CrossType => PortableType, crossProject => portableProject}
+import sbtcrossproject.CrossPlugin.autoImport.{
+  CrossType => PortableType,
+  crossProject => portableProject
+}
 
 import scala.sys.process.Process
 import scala.util.Try
 
-val utilPlayDep = "com.malliina" %% "util-play" % "5.0.0"
+val utilPlayDep = "com.malliina" %% "util-play" % "5.1.1"
+val scalaTestDep = "org.scalatest" %% "scalatest" % "3.0.7" % Test
+val scalaTestPlusDep = "org.scalatestplus.play" %% "scalatestplus-play" % "4.0.2" % Test
 
 val commonSettings = Seq(
   organization := "com.malliina",
@@ -21,14 +31,20 @@ val commonSettings = Seq(
   )
 )
 
-val vanilla = project.in(file("vanilla"))
-  .enablePlugins(PlayDefaultPlugin)
-  .settings(commonSettings)
+val backendSettings = Seq(
+  libraryDependencies ++= Seq(
+    utilPlayDep,
+    utilPlayDep % Test classifier "tests",
+    scalaTestDep,
+    scalaTestPlusDep
+  )
+)
+
+val vanilla = project
+  .in(file("vanilla"))
+  .enablePlugins(PlayScala)
+  .settings(commonSettings ++ backendSettings)
   .settings(
-    libraryDependencies ++= Seq(
-      utilPlayDep,
-      utilPlayDep % Test classifier "tests"
-    ),
     pipelineStages := Seq(digest, gzip)
   )
 
@@ -40,59 +56,75 @@ val cross = portableProject(JSPlatform, JVMPlatform)
 val crossJvm = cross.jvm
 val crossJs = cross.js
 
-val frontend = project.in(file("frontend"))
+val frontend = project
+  .in(file("frontend"))
   .enablePlugins(ScalaJSBundlerPlugin, ScalaJSWeb)
   .dependsOn(crossJs)
   .settings(commonSettings)
   .settings(
     libraryDependencies ++= Seq(
-      "com.lihaoyi" %%% "scalatags" % "0.6.7",
-      "org.scala-js" %%% "scalajs-dom" % "0.9.6",
-      "org.scalatest" %%% "scalatest" % "3.0.5" % Test,
+      "com.lihaoyi" %%% "scalatags" % "0.6.8",
+      "org.scala-js" %%% "scalajs-dom" % "0.9.7",
+      "org.scalatest" %%% "scalatest" % "3.0.7" % Test,
       "be.doeraene" %%% "scalajs-jquery" % "0.9.4"
     ),
     scalaJSUseMainModuleInitializer := true,
     version in webpack := "4.27.1",
     emitSourceMaps := false,
     webpackBundlingMode := BundlingMode.LibraryOnly(),
+    npmDependencies in Compile ++= Seq(
+//      "@fortawesome/fontawesome-free" -> "5.8.1"
+//      "bootstrap" -> "4.2.1",
+//      "jquery" -> "3.3.1",
+//      "popper.js" -> "1.14.6"
+    ),
     npmDevDependencies in Compile ++= Seq(
-      // Hack because webpack sucks
-      "terser" -> "3.14.1",
+      "autoprefixer" -> "9.4.3",
+      "cssnano" -> "4.1.8",
+      "css-loader" -> "2.1.0",
+      "file-loader" -> "3.0.1",
+      "less" -> "3.9.0",
+      "less-loader" -> "4.1.0",
+      "mini-css-extract-plugin" -> "0.5.0",
+      "postcss-import" -> "12.0.1",
+      "postcss-loader" -> "3.0.0",
+      "postcss-preset-env" -> "6.5.0",
+      "style-loader" -> "0.23.1",
+      "url-loader" -> "1.1.2",
       "webpack-merge" -> "4.1.5"
     ),
     webpackConfigFile in fastOptJS := Some(baseDirectory.value / "webpack.dev.config.js"),
     webpackConfigFile in fullOptJS := Some(baseDirectory.value / "webpack.prod.config.js"),
   )
 
-val backend = project.in(file("backend"))
-  .enablePlugins(WebScalaJSBundlerPlugin, PlayDefaultPlugin)
+val backend = project
+  .in(file("backend"))
+  .enablePlugins(WebScalaJSBundlerPlugin, PlayScala)
   .dependsOn(crossJvm)
-  .settings(commonSettings)
+  .settings(commonSettings ++ backendSettings)
   .settings(
-    libraryDependencies ++= Seq(
-      utilPlayDep,
-      utilPlayDep % Test classifier "tests"
-    ),
     pipelineStages := Seq(digest, gzip),
     scalaJSProjects := Seq(frontend),
     pipelineStages in Assets := Seq(scalaJSPipeline)
   )
 
-val native = project.in(file("native"))
+val native = project
+  .in(file("native"))
   .enablePlugins(PlayScala, SbtNativePackager, BuildInfoPlugin)
-  .settings(commonSettings ++ WinPlugin.windowsSettings)
+  .settings(commonSettings ++ backendSettings ++ WinPlugin.windowsSettings)
   .settings(
     retrieveManaged := false,
     fork in Test := true,
     libraryDependencies ++= Seq(
-      "com.lihaoyi" %% "scalatags" % "0.6.7"
+      "com.lihaoyi" %% "scalatags" % "0.6.8"
     ),
     exportJars := true,
     javacOptions ++= Seq("-source", "1.8", "-target", "1.8"),
     scalacOptions ++= Seq(
       "-target:jvm-1.8",
       "-deprecation",
-      "-encoding", "UTF-8",
+      "-encoding",
+      "UTF-8",
       "-unchecked",
       "-feature",
       "-language:existentials",
@@ -111,7 +143,8 @@ val native = project.in(file("native"))
     buildInfoPackage := "com.malliina.pn"
   )
 
-val playTemplates = project.in(file("."))
+val playTemplates = project
+  .in(file("."))
   .aggregate(vanilla, frontend, backend, native)
   .settings(commonSettings)
 

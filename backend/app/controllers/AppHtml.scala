@@ -26,7 +26,8 @@ class AppHtml(scripts: Seq[String]) extends Tags(scalatags.Text) {
   def index(msg: String) = TagPage(
     html(
       head(
-        cssLink(routes.Home.versioned("css/main.css")),
+        cssLink(routes.Home.versioned("css/styles.css")),
+//        script(`type` := MimeTypes.JAVASCRIPT, defer, src := routes.Home.versioned("styles-library.js")),
         scripts.map { js => script(`type` := MimeTypes.JAVASCRIPT, defer, src := routes.Home.versioned(js)) },
       ),
       body(
