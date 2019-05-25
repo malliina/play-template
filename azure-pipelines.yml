@@ -5,11 +5,14 @@
 pool:
   vmImage: 'Ubuntu 16.04'
 
+variables:
+  sbtVersion: 1.2.8
+
 steps:
-- script: wget https://dl.bintray.com/sbt/debian/sbt-1.2.8.deb
+- script: wget https://dl.bintray.com/sbt/debian/sbt-$(sbtVersion).deb
   displayName: 'Download SBT'
 
-- script: sudo dpkg -i sbt-1.2.8.deb
+- script: sudo dpkg -i sbt-$(sbtVersion).deb
   displayName: 'Install SBT'
 
 - script: sbt test:test
