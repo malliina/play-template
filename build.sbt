@@ -101,8 +101,8 @@ val frontend = project
       val cwd = (crossTarget in (Compile, npmUpdate)).value
       log.info(s"Running 'ncu' in $cwd...")
       Process("ncu", cwd).run(log).exitValue()
-    },
-    dependencyUpdates := dependencyUpdates.dependsOn(ncu).value
+    }
+//    dependencyUpdates := dependencyUpdates.dependsOn(ncu).value
   )
 
 val backend = project
