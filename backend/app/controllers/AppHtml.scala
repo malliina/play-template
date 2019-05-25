@@ -26,9 +26,11 @@ class AppHtml(scripts: Seq[String]) extends Tags(scalatags.Text) {
   def index(msg: String) = TagPage(
     html(
       head(
-        cssLink(routes.Home.versioned("css/styles.css")),
-//        script(`type` := MimeTypes.JAVASCRIPT, defer, src := routes.Home.versioned("styles-library.js")),
-        scripts.map { js => script(`type` := MimeTypes.JAVASCRIPT, defer, src := routes.Home.versioned(js)) },
+        stylesheet("vendors.css"),
+        stylesheet("styles.css"),
+        scripts.map { js =>
+          script(`type` := MimeTypes.JAVASCRIPT, defer, src := routes.Home.versioned(js))
+        },
       ),
       body(
         div(`class` := "container", id := FrontKeys.FrontContainer)(
@@ -45,4 +47,6 @@ class AppHtml(scripts: Seq[String]) extends Tags(scalatags.Text) {
       )
     )
   )
+
+  def stylesheet(file: String) = cssLink(routes.Home.versioned(file))
 }

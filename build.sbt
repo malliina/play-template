@@ -56,6 +56,7 @@ val cross = portableProject(JSPlatform, JVMPlatform)
 val crossJvm = cross.jvm
 val crossJs = cross.js
 
+val ncu = taskKey[Int]("Runs npm-check-updates")
 val frontend = project
   .in(file("frontend"))
   .enablePlugins(ScalaJSBundlerPlugin, ScalaJSWeb)
@@ -65,36 +66,43 @@ val frontend = project
     libraryDependencies ++= Seq(
       "com.lihaoyi" %%% "scalatags" % "0.6.8",
       "org.scala-js" %%% "scalajs-dom" % "0.9.7",
-      "org.scalatest" %%% "scalatest" % "3.0.7" % Test,
-      "be.doeraene" %%% "scalajs-jquery" % "0.9.4"
+      "be.doeraene" %%% "scalajs-jquery" % "0.9.5",
+      "org.scalatest" %%% "scalatest" % "3.0.7" % Test
     ),
     scalaJSUseMainModuleInitializer := true,
-    version in webpack := "4.27.1",
     emitSourceMaps := false,
     webpackBundlingMode := BundlingMode.LibraryOnly(),
     npmDependencies in Compile ++= Seq(
-//      "@fortawesome/fontawesome-free" -> "5.8.1"
-//      "bootstrap" -> "4.2.1",
-//      "jquery" -> "3.3.1",
-//      "popper.js" -> "1.14.6"
+      "@fortawesome/fontawesome-free" -> "5.8.2",
+      "bootstrap" -> "4.3.1",
+      "jquery" -> "3.4.1",
+      "popper.js" -> "1.15.0"
     ),
     npmDevDependencies in Compile ++= Seq(
-      "autoprefixer" -> "9.4.3",
-      "cssnano" -> "4.1.8",
-      "css-loader" -> "2.1.0",
+      "autoprefixer" -> "9.5.1",
+      "cssnano" -> "4.1.10",
+      "css-loader" -> "2.1.1",
       "file-loader" -> "3.0.1",
       "less" -> "3.9.0",
-      "less-loader" -> "4.1.0",
-      "mini-css-extract-plugin" -> "0.5.0",
+      "less-loader" -> "5.0.0",
+      "mini-css-extract-plugin" -> "0.6.0",
       "postcss-import" -> "12.0.1",
       "postcss-loader" -> "3.0.0",
-      "postcss-preset-env" -> "6.5.0",
+      "postcss-preset-env" -> "6.6.0",
       "style-loader" -> "0.23.1",
       "url-loader" -> "1.1.2",
-      "webpack-merge" -> "4.1.5"
+      "webpack-merge" -> "4.2.1"
     ),
+    version in webpack := "4.32.2",
     webpackConfigFile in fastOptJS := Some(baseDirectory.value / "webpack.dev.config.js"),
     webpackConfigFile in fullOptJS := Some(baseDirectory.value / "webpack.prod.config.js"),
+    ncu := {
+      val log = streams.value.log
+      val cwd = (crossTarget in (Compile, npmUpdate)).value
+      log.info(s"Running 'ncu' in $cwd...")
+      Process("ncu", cwd).run(log).exitValue()
+    },
+    dependencyUpdates := dependencyUpdates.dependsOn(ncu).value
   )
 
 val backend = project
