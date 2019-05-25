@@ -2,15 +2,14 @@
 # Start with a minimal pipeline that you can customize to build and deploy your code.
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
-timeoutInMinutes: 10
 pool:
   vmImage: 'Ubuntu 16.04'
 
 steps:
-- script: wget https://dl.bintray.com/sbt/debian/sbt-1.2.3.deb
+- script: wget https://dl.bintray.com/sbt/debian/sbt-1.2.8.deb
   displayName: 'Download SBT'
 
-- script: sudo dpkg -i sbt-1.2.3.deb
+- script: sudo dpkg -i sbt-1.2.8.deb
   displayName: 'Install SBT'
 
 - script: sbt test:test
