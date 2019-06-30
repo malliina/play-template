@@ -16,14 +16,14 @@ import sbtcrossproject.CrossPlugin.autoImport.{
 import scala.sys.process.Process
 import scala.util.Try
 
-val utilPlayDep = "com.malliina" %% "util-play" % "5.1.1"
-val scalaTestDep = "org.scalatest" %% "scalatest" % "3.0.7" % Test
-val scalaTestPlusDep = "org.scalatestplus.play" %% "scalatestplus-play" % "4.0.2" % Test
+val utilPlayDep = "com.malliina" %% "util-play" % "5.2.3"
+val scalaTestDep = "org.scalatest" %% "scalatest" % "3.0.8" % Test
+val scalaTestPlusDep = "org.scalatestplus.play" %% "scalatestplus-play" % "4.0.3" % Test
 
 val commonSettings = Seq(
   organization := "com.malliina",
   version := "0.0.1",
-  scalaVersion := "2.12.8",
+  scalaVersion := "2.13.0",
   scalacOptions := Seq("-unchecked", "-deprecation"),
   resolvers ++= Seq(
     Resolver.jcenterRepo,
@@ -64,10 +64,10 @@ val frontend = project
   .settings(commonSettings)
   .settings(
     libraryDependencies ++= Seq(
-      "com.lihaoyi" %%% "scalatags" % "0.6.8",
+      "com.lihaoyi" %%% "scalatags" % "0.7.0",
       "org.scala-js" %%% "scalajs-dom" % "0.9.7",
       "be.doeraene" %%% "scalajs-jquery" % "0.9.5",
-      "org.scalatest" %%% "scalatest" % "3.0.7" % Test
+      "org.scalatest" %%% "scalatest" % "3.0.8" % Test
     ),
     scalaJSUseMainModuleInitializer := true,
     emitSourceMaps := false,
@@ -124,7 +124,7 @@ val native = project
     retrieveManaged := false,
     fork in Test := true,
     libraryDependencies ++= Seq(
-      "com.lihaoyi" %% "scalatags" % "0.6.8"
+      "com.lihaoyi" %% "scalatags" % "0.7.0"
     ),
     exportJars := true,
     javacOptions ++= Seq("-source", "1.8", "-target", "1.8"),
@@ -139,7 +139,6 @@ val native = project
       "-language:higherKinds",
       "-language:implicitConversions",
       "-Xlint",
-      "-Yno-adapted-args",
       "-Ywarn-numeric-widen"
     ),
     upgradeGuid := "5EC7F244-24F9-4E1C-B19D-591626C50F02",
