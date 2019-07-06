@@ -3,4 +3,4 @@ language: scala
 scala:
    - 2.13.0
 jdk:
-  - oraclejdk8
+  - openjdk8

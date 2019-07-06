@@ -73,16 +73,16 @@ val frontend = project
     emitSourceMaps := false,
     webpackBundlingMode := BundlingMode.LibraryOnly(),
     npmDependencies in Compile ++= Seq(
-      "@fortawesome/fontawesome-free" -> "5.8.2",
+      "@fortawesome/fontawesome-free" -> "5.9.0",
       "bootstrap" -> "4.3.1",
       "jquery" -> "3.4.1",
       "popper.js" -> "1.15.0"
     ),
     npmDevDependencies in Compile ++= Seq(
-      "autoprefixer" -> "9.5.1",
+      "autoprefixer" -> "9.6.0",
       "cssnano" -> "4.1.10",
-      "css-loader" -> "2.1.1",
-      "file-loader" -> "3.0.1",
+      "css-loader" -> "3.0.0",
+      "file-loader" -> "4.0.0",
       "less" -> "3.9.0",
       "less-loader" -> "5.0.0",
       "mini-css-extract-plugin" -> "0.6.0",
@@ -90,10 +90,10 @@ val frontend = project
       "postcss-loader" -> "3.0.0",
       "postcss-preset-env" -> "6.6.0",
       "style-loader" -> "0.23.1",
-      "url-loader" -> "1.1.2",
+      "url-loader" -> "2.0.1",
       "webpack-merge" -> "4.2.1"
     ),
-    version in webpack := "4.32.2",
+    version in webpack := "4.35.2",
     webpackConfigFile in fastOptJS := Some(baseDirectory.value / "webpack.dev.config.js"),
     webpackConfigFile in fullOptJS := Some(baseDirectory.value / "webpack.prod.config.js"),
     ncu := {
