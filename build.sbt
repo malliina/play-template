@@ -16,14 +16,14 @@ import sbtcrossproject.CrossPlugin.autoImport.{
 import scala.sys.process.Process
 import scala.util.Try
 
-val utilPlayDep = "com.malliina" %% "util-play" % "5.2.3"
+val utilPlayDep = "com.malliina" %% "util-play" % "5.2.4"
 val scalaTestDep = "org.scalatest" %% "scalatest" % "3.0.8" % Test
 val scalaTestPlusDep = "org.scalatestplus.play" %% "scalatestplus-play" % "4.0.3" % Test
 
 val commonSettings = Seq(
   organization := "com.malliina",
   version := "0.0.1",
-  scalaVersion := "2.13.0",
+  scalaVersion := "2.13.1",
   scalacOptions := Seq("-unchecked", "-deprecation"),
   resolvers ++= Seq(
     Resolver.jcenterRepo,
