@@ -1,17 +1,9 @@
 import com.malliina.sbt.GenericKeys
 import com.malliina.sbt.GenericKeys.pkgHome
-import com.malliina.sbt.win.WinKeys.{
-  forceStopOnUninstall,
-  upgradeGuid,
-  useTerminateProcess,
-  winSwExe
-}
+import com.malliina.sbt.win.WinKeys.{forceStopOnUninstall, upgradeGuid, useTerminateProcess, winSwExe}
 import com.malliina.sbt.win.WinPlugin
 import sbt.Keys.fork
-import sbtcrossproject.CrossPlugin.autoImport.{
-  CrossType => PortableType,
-  crossProject => portableProject
-}
+import sbtcrossproject.CrossPlugin.autoImport.{CrossType => PortableType, crossProject => portableProject}
 
 import scala.sys.process.Process
 import scala.util.Try
@@ -36,7 +28,8 @@ val backendSettings = Seq(
     utilPlayDep,
     utilPlayDep % Test classifier "tests",
     scalaTestDep,
-    scalaTestPlusDep
+    scalaTestPlusDep,
+    "ch.vorburger.mariaDB4j" % "mariaDB4j" % "2.4.0" % Test
   )
 )
 
