@@ -63,7 +63,6 @@ val frontend = project
       "org.scalatest" %%% "scalatest" % "3.0.8" % Test
     ),
     scalaJSUseMainModuleInitializer := true,
-    emitSourceMaps := false,
     webpackBundlingMode := BundlingMode.LibraryOnly(),
     npmDependencies in Compile ++= Seq(
       "@fortawesome/fontawesome-free" -> "5.9.0",

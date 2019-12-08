@@ -20,12 +20,12 @@ Seq(
 // for scala.js projects
 Seq(
   "com.typesafe.sbt" % "sbt-less" % "1.1.2",
-  "org.portable-scala" % "sbt-scalajs-crossproject" % "0.6.0",
-  "org.scala-js" % "sbt-scalajs" % "0.6.29",
+  "org.portable-scala" % "sbt-scalajs-crossproject" % "0.6.1",
+  "org.scala-js" % "sbt-scalajs" % "0.6.31",
   "com.vmunier" % "sbt-web-scalajs" % "1.0.6",
   "ch.epfl.scala" % "sbt-web-scalajs-bundler" % "0.14.0",
   "ch.epfl.scala" % "sbt-bloop" % "1.3.4",
-  "org.scalameta" % "sbt-scalafmt" % "2.0.4"
+  "org.scalameta" % "sbt-scalafmt" % "2.2.1"
 ) map addSbtPlugin
 
 // for native
