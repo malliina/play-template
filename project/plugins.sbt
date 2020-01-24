@@ -1,12 +1,5 @@
 scalaVersion := "2.12.10"
 
-resolvers ++= Seq(
-  Resolver.bintrayRepo("malliina", "maven"),
-  ivyRepo("malliina bintray sbt", "https://dl.bintray.com/malliina/sbt-plugins/")
-)
-
-classpathTypes += "maven-plugin"
-
 scalacOptions ++= Seq("-unchecked", "-deprecation")
 
 // for vanilla
@@ -30,8 +23,5 @@ Seq(
 
 // for native
 Seq(
-  "com.malliina" %% "sbt-packager" % "2.7.0"
+  "com.malliina" % "sbt-packager" % "2.8.4"
 ) map addSbtPlugin
-
-def ivyRepo(name: String, urlString: String): URLRepository =
-  Resolver.url(name, url(urlString))(Resolver.ivyStylePatterns)

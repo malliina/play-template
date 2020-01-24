@@ -8,9 +8,10 @@ import sbtcrossproject.CrossPlugin.autoImport.{CrossType => PortableType, crossP
 import scala.sys.process.Process
 import scala.util.Try
 
-val utilPlayDep = "com.malliina" %% "util-play" % "5.2.4"
+val utilPlayDep = "com.malliina" %% "util-play" % "5.4.1"
 val scalaTestDep = "org.scalatest" %% "scalatest" % "3.0.8" % Test
-val scalaTestPlusDep = "org.scalatestplus.play" %% "scalatestplus-play" % "4.0.3" % Test
+val scalaTestPlusDep = "org.scalatestplus.play" %% "scalatestplus-play" % "5.0.0" % Test
+val testContainersScalaVersion = "0.35.0"
 
 val commonSettings = Seq(
   organization := "com.malliina",
@@ -29,7 +30,9 @@ val backendSettings = Seq(
     utilPlayDep % Test classifier "tests",
     scalaTestDep,
     scalaTestPlusDep,
-    "ch.vorburger.mariaDB4j" % "mariaDB4j" % "2.4.0" % Test
+    "ch.vorburger.mariaDB4j" % "mariaDB4j" % "2.4.0" % Test,
+    "com.dimafeng" %% "testcontainers-scala-scalatest" % testContainersScalaVersion % Test,
+    "com.dimafeng" %% "testcontainers-scala-mysql" % testContainersScalaVersion % Test
   )
 )
 
@@ -57,9 +60,9 @@ val frontend = project
   .settings(commonSettings)
   .settings(
     libraryDependencies ++= Seq(
-      "com.lihaoyi" %%% "scalatags" % "0.7.0",
-      "org.scala-js" %%% "scalajs-dom" % "0.9.7",
-      "be.doeraene" %%% "scalajs-jquery" % "0.9.5",
+      "com.lihaoyi" %%% "scalatags" % "0.8.4",
+      "org.scala-js" %%% "scalajs-dom" % "0.9.8",
+      "be.doeraene" %%% "scalajs-jquery" % "0.9.6",
       "org.scalatest" %%% "scalatest" % "3.0.8" % Test
     ),
     scalaJSUseMainModuleInitializer := true,
@@ -116,7 +119,7 @@ val native = project
     retrieveManaged := false,
     fork in Test := true,
     libraryDependencies ++= Seq(
-      "com.lihaoyi" %% "scalatags" % "0.7.0"
+      "com.lihaoyi" %% "scalatags" % "0.8.4"
     ),
     exportJars := true,
     javacOptions ++= Seq("-source", "1.8", "-target", "1.8"),
@@ -149,3 +152,5 @@ val playTemplates = project
 
 def gitHash: String =
   Try(Process("git rev-parse --short HEAD").lineStream.head).toOption.getOrElse("unknown")
+
+Global / onChangedBuildSource := ReloadOnSourceChanges
