@@ -30,6 +30,8 @@ val backendSettings = Seq(
     utilPlayDep % Test classifier "tests",
     scalaTestDep,
     scalaTestPlusDep,
+    "mysql" % "mysql-connector-java" % "5.1.48",
+    "org.flywaydb" % "flyway-core" % "6.1.1",
     "ch.vorburger.mariaDB4j" % "mariaDB4j" % "2.4.0" % Test,
     "com.dimafeng" %% "testcontainers-scala-scalatest" % testContainersScalaVersion % Test,
     "com.dimafeng" %% "testcontainers-scala-mysql" % testContainersScalaVersion % Test
@@ -102,7 +104,7 @@ val frontend = project
 
 val backend = project
   .in(file("backend"))
-  .enablePlugins(WebScalaJSBundlerPlugin, PlayScala)
+  .enablePlugins(PlayScala, WebScalaJSBundlerPlugin)
   .dependsOn(crossJvm)
   .settings(commonSettings ++ backendSettings)
   .settings(
